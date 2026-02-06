@@ -123,22 +123,33 @@ def generate():
 @app.route('/download/<filename>')
 def download(filename):
     """Serve generated video for download."""
-    # Get absolute path to output directory
-    base_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    output_dir = os.path.join(base_dir, app.config['OUTPUT_FOLDER'])
-    file_path = os.path.join(output_dir, filename)
-    
-    print(f"Download request for: {filename}")
-    print(f"Looking for file at: {file_path}")
-    print(f"File exists: {os.path.exists(file_path)}")
-    
-    if os.path.exists(file_path):
-        return send_file(file_path, as_attachment=True, mimetype='video/mp4')
-    else:
-        return jsonify({'error': f'File not found: {filename}'}), 404
+    try:
+        output_path = os.path.join(app.config['OUTPUT_FOLDER'], filename)
+        if os.path.exists(output_path):
+            return send_file(output_path, as_attachment=True)
+        else:
+            return jsonify({'error': 'File not found'}), 404
+    except Exception as e:
+        return jsonify({'error': str(e)}), 500
 
 
 if __name__ == '__main__':
+    # Get port from environment variable (for cloud hosting) or use 5000 for local
+    port = int(os.environ.get('PORT', 5000))
+    
+    # Determine if running in production
+    debug_mode = os.environ.get('FLASK_ENV') != 'production'
+    
+    print("\n" + "="*60)
+    print("[OK] Applied MoviePy compatibility patch for Pillow 10+")
     print("Starting Live Wallpaper Ad Generator...")
-    print("Open your browser and navigate to: http://localhost:5000")
-    app.run(debug=True, host='0.0.0.0', port=5000)
+    print(f"Environment: {'Development' if debug_mode else 'Production'}")
+    print(f"Open your browser and navigate to: http://localhost:{port}")
+    print("="*60 + "\n")
+    
+    # Run Flask app
+    app.run(
+        host='0.0.0.0',  # Allow external connections (required for cloud hosting)
+        port=port,
+        debug=debug_mode
+    )
