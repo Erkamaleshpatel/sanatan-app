@@ -1,0 +1,53 @@
+# Docker
+.dockerignore
+Dockerfile
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+
+# Virtual environments
+.Python
+env/
+venv/
+.venv/
+ENV/
+
+# Project specific - don't copy to Docker
+uploads/
+output/
+temp_frames/
+*.mp4
+*.mp3
+*.m4a
+*.wav
+*.jpg
+*.png
+!assets/phone_mockup.png
+!assets/playstore_mockup.png
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Git
+.git/
+.gitignore
+
+# Environment
+.env
+.env.local
+
+# Build artifacts
+build/
+dist/
+*.egg-info/

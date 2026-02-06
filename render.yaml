@@ -1,15 +1,9 @@
 services:
   - type: web
     name: sanatan-app
-    env: python
+    runtime: docker
     plan: free
-    buildCommand: |
-      apt-get update && apt-get install -y ffmpeg imagemagick
-      pip install --upgrade pip
-      pip install -r requirements.txt
-    startCommand: python web/app.py
+    dockerfilePath: ./Dockerfile
     envVars:
-      - key: PYTHON_VERSION
-        value: 3.11.0
       - key: PORT
         value: 10000
