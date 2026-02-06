@@ -20,11 +20,11 @@ RUN pip install --no-cache-dir --upgrade pip && \
 # Copy application code
 COPY . .
 
-# Expose port
-EXPOSE 10000
+# Expose port (Railway uses dynamic PORT)
+EXPOSE ${PORT:-10000}
 
-# Set environment variable
-ENV PORT=10000
+# Set default PORT if not provided (for Render compatibility)
+ENV PORT=${PORT:-10000}
 
-# Run the application with Gunicorn
-CMD ["gunicorn", "--bind", "0.0.0.0:10000", "--workers", "1", "--timeout", "300", "--chdir", "/app", "web.app:app"]
+# Run the application with Gunicorn using dynamic port
+CMD gunicorn --bind 0.0.0.0:$PORT --workers 1 --timeout 300 --chdir /app web.app:app
