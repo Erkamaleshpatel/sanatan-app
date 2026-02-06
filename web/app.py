@@ -3,13 +3,20 @@ Flask web application for ad video generation.
 Provides a simple UI for uploading wallpapers and generating videos.
 """
 
-from flask import Flask, render_template, request, send_file, jsonify, url_for
 import os
 import sys
-from werkzeug.utils import secure_filename
 
-# Add parent directory to path
+# Add parent directory to path FIRST
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
+# Apply MoviePy compatibility patch BEFORE any other imports
+try:
+    import moviepy_compat
+except ImportError:
+    pass  # Compatibility patch not found, continue anyway
+
+from flask import Flask, render_template, request, send_file, jsonify, url_for
+from werkzeug.utils import secure_filename
 
 from templates.base_template import generate_video
 

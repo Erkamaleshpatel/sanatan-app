@@ -3,11 +3,23 @@ Base template orchestrator for ad video generation.
 Coordinates all scenes, voiceovers, and final composition.
 """
 
+import os
+import sys
+
+# Apply MoviePy compatibility patch BEFORE moviepy imports
+try:
+    # Add parent directory to path if needed
+    parent_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+    if parent_dir not in sys.path:
+        sys.path.insert(0, parent_dir)
+    import moviepy_compat
+except ImportError:
+    pass  # Compatibility patch not found, continue anyway
+
 from moviepy.editor import (
     concatenate_videoclips, AudioFileClip,
     CompositeVideoClip, VideoFileClip
 )
-import os
 from typing import Dict, List, Union
 from scripts.script_generator import ScriptGenerator
 from audio.voice_generator import VoiceGenerator
