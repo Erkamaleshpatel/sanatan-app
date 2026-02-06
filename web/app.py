@@ -47,6 +47,12 @@ def index():
     return render_template('index.html')
 
 
+@app.route('/health')
+def health():
+    """Health check endpoint."""
+    return jsonify({'status': 'healthy', 'message': 'App is running!'})
+
+
 @app.route('/generate', methods=['POST'])
 def generate():
     """Handle video generation request."""
