@@ -26,5 +26,5 @@ EXPOSE 10000
 # Set environment variable
 ENV PORT=10000
 
-# Run the application
-CMD ["python", "web/app.py"]
+# Run the application with Gunicorn
+CMD ["gunicorn", "--bind", "0.0.0.0:10000", "--workers", "1", "--timeout", "300", "--chdir", "/app", "web.app:app"]
