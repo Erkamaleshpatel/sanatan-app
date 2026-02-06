@@ -3,7 +3,10 @@ services:
     name: sanatan-app
     env: python
     plan: free
-    buildCommand: pip install -r requirements.txt
+    buildCommand: |
+      apt-get update && apt-get install -y ffmpeg imagemagick
+      pip install --upgrade pip
+      pip install -r requirements.txt
     startCommand: python web/app.py
     envVars:
       - key: PYTHON_VERSION
